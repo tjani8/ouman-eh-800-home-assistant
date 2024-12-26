@@ -1,0 +1,603 @@
+## Laita näihin IP-OSOITE jokaiseen ja ensinmäiseen Oumanin TUNNUS ja SALASANA.
+## Aina kun muutat näitä viittä riviä niin HA pitää käynnistää uudestaan jotta muutokset tulevat käyttöön
+shell_command:
+  ouman_logon: curl "http://IP-OSOITE/login?uid=TUNNUS;pwd=SALASANA;"
+  ouman_update: curl "http://IP-OSOITE/update?{{ id }}={{ value }};"
+  ouman_data_1: curl "http://IP-OSOITE/{{ type }}?{{ id }};"
+  ouman_data: curl "http://IP-OSOITE/request?{{ state_attr('sensor.ouman_rekisterit', 'data')}}"
+  ouman_registers: awk '/^[[:space:]]*#/ {next} /unique_id':' S/ {printf "%s;", $2} END {print ""}'  /config/packages/ouman*
+
+## Näihin ei tarvitse koskea
+template:
+  - trigger:
+      - trigger: homeassistant
+        event: start
+      - trigger: event
+        event_type: event_template_reloaded
+    action:
+      # - delay: 2
+      - action: shell_command.ouman_registers
+        response_variable: registers
+    sensor:
+      - name: Ouman rekisterit
+        state: "{{ registers['stdout'].count('S') }}"
+        attributes:
+          data: "{{ registers['stdout'] }}"
+
+  - trigger:
+    - trigger: time_pattern
+      minutes: "/1"
+    - trigger: event
+      event_type: call_service
+      event_data:
+        service: ouman_update
+    - trigger: event
+      event_type: event_template_reloaded
+
+    action:
+     - delay: 3
+     - action: shell_command.ouman_data
+       response_variable: ouman
+
+    sensor:
+      - name: Ouman vastaus
+        state: "{{ ouman['stdout'].count('S') }}"
+        attributes:
+          data: "{{ ouman['stdout'] }}"
+          error: "{{ ouman['returncode'] > 0}}"
+
+
+
+
+## Tästä alaspäin voit kommentoida tai poistaa kommentit niistä antureista jotka haluat käyttöön.
+## Eli poista # ja yksi välilyönti (# ) aina koko yhden ryppään kaikkien rivien edestä mikäli haluat anturin käyttöön.
+## name rivillä voit halutessasi nimetä anturin haluamaksesi.
+
+## L2, releet, ja lisämittaukset löydät erillisistä tiedostoista.
+## Niistä voit ottaa antureitä käyttöön samanlailla poistamalla kommentoinnin rivin edestä.
+## Muutosten jälkeen lataa mallientiteetit uudestaan HA:n kehittäjän työkalut -valikosta tai käynnistä HA uudestaan.
+
+
+## Tämä sensori hakee Oumanin hälytyksen
+## Mikäli hälytyksiä useampi, ensinmäisenä tullut näkyy, muita ei tällä koodilla.
+
+  # - trigger:
+    # - trigger: time_pattern
+      # minutes: "/2"
+    # - trigger: event
+      # event_type: event_template_reloaded
+    # action:
+     # - action: shell_command.ouman_data_1
+       # data:
+         # type: alarms
+         # id:
+       # response_variable: alarms
+    # sensor:
+      # - name: Ouman hälytys
+        # unique_id: ouman_alarm
+        # state:  "{{ 'Ei hälytystä' if alarms['stdout'].count(';') == 0 else alarms['stdout'].split(';')[0].split('?')[1] }}"
+        # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+
+  - sensor:
+ ######## L1 LÄMPÖANTURIT JA VENTTIILI ########
+
+    - name: Ouman L1 toteutunut
+      unique_id: S_259_85
+      device_class: temperature
+      unit_of_measurement: "°C"
+      state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('259_85=')[1].split(';')[0] | float (0)}}"
+      availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+    - name: Ouman L1 tavoite
+      unique_id: S_275_85
+      device_class: temperature
+      unit_of_measurement: "°C"
+      state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('275_85=')[1].split(';')[0] | float (0)}}"
+      availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+    - name: Ouman L1 käyrä
+      unique_id: S_260_85
+      device_class: temperature
+      unit_of_measurement: "°C"
+      state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('260_85=')[1].split(';')[0] }}"
+      availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+    - name: Ouman L1 venttiilin asento
+      unique_id: S_272_85
+      icon: mdi:valve
+      unit_of_measurement: "%"
+      state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('272_85=')[1].split(';')[0] }}"
+      availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+    - name: Ouman L1 hienosäädön vaikutus menovesi
+      unique_id: S_286_85
+      device_class: temperature
+      unit_of_measurement: "°C"
+      state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('286_85=')[1].split(';')[0] }}"
+      availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+## Mikäli sinulla on lattilämmitys käytössä L1 piirissä niin tämä anturi on lattilämmityksen ennakoinnin hidastus vaikutus, ota jompikumpi nimi käyttöön
+    # - name: Ouman L1 ulkolämpötilan hidastus vaikutus
+    # - name: Ouman L1 lattialämmityksen ennakoinnin vaikutus
+      # unique_id: S_258_85
+      # device_class: temperature
+      # unit_of_measurement: "°C"
+      # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('258_85=')[1].split(';')[0] }}"
+      # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+######## ULKOLÄMPÖ ########
+
+    - name: Ouman ulkolämpötila
+      unique_id: S_227_85
+      icon: mdi:sun-thermometer-outline
+      device_class: temperature
+      unit_of_measurement: "°C"
+      state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('227_85=')[1].split(';')[0] }}"
+      availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+    # - name: Ouman ulkolämpötilan keskiarvo vrk
+      # unique_id: S_33_85
+      # device_class: temperature
+      # unit_of_measurement: "°C"
+      # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('33_85=')[1].split(';')[0] }}"
+      # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+    # - name: Ouman ulkolämpötila hidastettu
+      # unique_id: S_228_85
+      # device_class: temperature
+      # unit_of_measurement: "°C"
+      # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('228_85=')[1].split(';')[0] }}"
+      # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+######## HUONELÄMPÖ ########
+
+    # - name: Ouman L1 huonelämpötila
+      # unique_id: S_261_85
+      # icon: mdi:home-thermometer-outline
+      # device_class: temperature
+      # unit_of_measurement: "°C"
+      # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('261_85=')[1].split(';')[0] }}"
+      # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+    # - name: Ouman L1 huonelämpötila hidastettu
+      # unique_id: S_262_85
+      # device_class: temperature
+      # unit_of_measurement: "°C"
+      # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('262_85=')[1].split(';')[0] }}"
+      # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+    # - name: Ouman L1 huonekompensoinnin vaikutus
+      # unique_id: S_263_85
+      # device_class: temperature
+      # unit_of_measurement: "°C"
+      # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('263_85=')[1].split(';')[0] }}"
+      # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+    # - name: Ouman L1 laskennallinen huoneasetusarvo
+      # unique_id: S_278_85
+      # device_class: temperature
+      # unit_of_measurement: "°C"
+      # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('278_85=')[1].split(';')[0] }}"
+      # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+    # - name: Ouman L1 hienosäädön vaikutus huone
+      # unique_id: S_285_85
+      # device_class: temperature
+      # unit_of_measurement: "°C"
+      # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('285_85=')[1].split(';')[0] }}"
+      # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+      
+    # - name: Ouman L1 huonekompensoinnin aikakorjaus
+      # unique_id: S_264_85
+      # device_class: temperature
+      # unit_of_measurement: "°C"
+      # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('264_85=')[1].split(';')[0] }}"
+      # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+    number:
+
+####### L1 HIENOSÄÄTÖ / LÄMMÖNPUDOTUS MENOVESI ########
+
+      - name: Ouman L1 hienosäätö menovesi
+        unit_of_measurement: "°C"
+        unique_id: S_134_85
+        state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('134_85=')[1].split(';')[0] }}"
+        set_value:
+          - action: shell_command.ouman_logon
+          - action: shell_command.ouman_update
+            data:
+              value: "{{value}}"
+              id: "S_134_85"
+        step: 0.1
+        min: -4
+        max: 4
+        icon: mdi:knob
+        availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+      # - name: Ouman L1 lämmönpudotus menovesi
+        # unit_of_measurement: "°C"
+        # unique_id: S_89_85
+        # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_89_85=')[1].split(';')[0] }}"
+        # set_value:
+          # - action: shell_command.ouman_logon
+          # - action: shell_command.ouman_update
+            # data:
+              # value: "{{value}}"
+              # id: "S_89_85"
+        # step: 0.1
+        # min: 0
+        # max: 40
+        # icon: mdi:knob
+        # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+      # - name: Ouman L1 suuri lämmönpudotus menovesi
+        # unit_of_measurement: "°C"
+        # unique_id: S_90_85
+        # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_90_85=')[1].split(';')[0] }}"
+        # set_value:
+          # - action: shell_command.ouman_logon
+          # - action: shell_command.ouman_update
+            # data:
+              # value: "{{value}}"
+              # id: "S_90_85"
+        # step: 0.1
+        # min: 0
+        # max: 40
+        # icon: mdi:knob
+        # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+######## L1 HIENOSÄÄTÖ / LÄMMÖNPUDOTUS HUONELÄMPÖ ########
+
+      # - name: Ouman L1 huonelämpö asetus
+        # unit_of_measurement: "°C"
+        # unique_id: S_81_85
+        # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_81_85=')[1].split(';')[0] }}"
+        # set_value:
+          # - action: shell_command.ouman_logon
+          # - action: shell_command.ouman_update
+            # data:
+              # value: "{{value}}"
+              # id: "S_81_85"
+        # step: 0.1
+        # min: 5
+        # max: 30
+        # icon: mdi:knob
+        # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+      # - name: Ouman L1 hienosäätö huonelämpö
+        # unit_of_measurement: "°C"
+        # unique_id: S_102_85
+        # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('102_85=')[1].split(';')[0] }}"
+        # set_value:
+          # - action: shell_command.ouman_logon
+          # - action: shell_command.ouman_update
+            # data:
+              # value: "{{value}}"
+              # id: "S_102_85"
+        # step: 0.1
+        # min: -4
+        # max: 4
+        # icon: mdi:knob
+        # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+      # - name: Ouman L1 lämmönpudotus huonelämpö
+        # unit_of_measurement: "°C"
+        # unique_id: S_87_85
+        # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_87_85=')[1].split(';')[0] }}"
+        # set_value:
+          # - action: shell_command.ouman_logon
+          # - action: shell_command.ouman_update
+            # data:
+              # value: "{{value}}"
+              # id: "S_87_85"
+        # step: 0.1
+        # min: 0
+        # max: 30
+        # icon: mdi:knob
+        # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+      # - name: Ouman L1 suuri lämmönpudotus huonelämpö
+        # unit_of_measurement: "°C"
+        # unique_id: S_88_85
+        # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_88_85=')[1].split(';')[0] }}"
+        # set_value:
+          # - action: shell_command.ouman_logon
+          # - action: shell_command.ouman_update
+            # data:
+              # value: "{{value}}"
+              # id: "S_88_85"
+        # step: 0.1
+        # min: 0
+        # max: 30
+        # icon: mdi:knob
+        # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+####### L1 VAKIOLÄMPÖTILASÄÄDIN ########
+
+      # - name: Ouman L1 vakiolämpötilasäädin asetus
+        # unit_of_measurement: "°C"
+        # unique_id: S_127_85
+        # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('127_85=')[1].split(';')[0] }}"
+        # set_value:
+          # - action: shell_command.ouman_logon
+          # - action: shell_command.ouman_update
+            # data:
+              # value: "{{value}}"
+              # id: "S_127_85"
+        # step: 0.1
+        # min: 5
+        # max: 95
+        # icon: mdi:knob
+        # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+
+
+######## L1 KOLMENPISTEEN KÄYRÄ  ########
+
+      # - name: Ouman L1 3-piste käyrän 1/3
+        # unit_of_measurement: "°C"
+        # unique_id: S_61_85;S_54_85;S_55_85
+        # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_61_85=')[1].split(';')[0] }}"
+        # set_value:
+          # - action: shell_command.ouman_logon
+          # - action: shell_command.ouman_update
+            # data:
+              # value: "{{value}}"
+              # id: "S_61_85"
+        # step: 1
+        # min: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_54_85=')[1].split(';')[0] }}"
+        # max: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_55_85=')[1].split(';')[0] }}"
+        # icon: mdi:tune-variant
+        # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+      # - name: Ouman L1 3-piste käyrän 2/3
+        # unit_of_measurement: "°C"
+        # unique_id: S_63_85
+        # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_63_85=')[1].split(';')[0] }}"
+        # set_value:
+          # - action: shell_command.ouman_logon
+          # - action: shell_command.ouman_update
+            # data:
+              # value: "{{value}}"
+              # id: "S_63_85"
+        # step: 1
+        # min: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_54_85=')[1].split(';')[0] }}"
+        # max: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_55_85=')[1].split(';')[0] }}"
+        # icon: mdi:tune-variant
+        # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+      # - name: Ouman L1 3-piste käyrän 3/3
+        # unit_of_measurement: "°C"
+        # unique_id: S_65_85
+        # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_65_85=')[1].split(';')[0] }}"
+        # set_value:
+          # - action: shell_command.ouman_logon
+          # - action: shell_command.ouman_update
+            # data:
+              # value: "{{value}}"
+              # id: "S_65_85"
+        # step: 1
+        # min: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_54_85=')[1].split(';')[0] }}"
+        # max: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_55_85=')[1].split(';')[0] }}"
+        # icon: mdi:tune-variant
+        # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+######## L1 VIIDENPISTEEN KÄYRÄ   ########
+
+      # - name: Ouman L1 5-piste käyrän 1/5
+        # unit_of_measurement: "°C"
+        # unique_id: S_67_85;S_54_85;S_55_85
+        # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_67_85=')[1].split(';')[0] }}"
+        # set_value:
+          # - action: shell_command.ouman_logon
+          # - action: shell_command.ouman_update
+            # data:
+              # value: "{{value}}"
+              # id: "S_67_85"
+        # step: 1
+        # min: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_54_85=')[1].split(';')[0] }}"
+        # max: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_55_85=')[1].split(';')[0] }}"
+        # icon: mdi:tune-variant
+        # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+      # - name: Ouman L1 5-piste käyrän 2/5
+        # unit_of_measurement: "°C"
+        # unique_id: S_69_85
+        # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_69_85=')[1].split(';')[0] }}"
+        # set_value:
+          # - action: shell_command.ouman_logon
+          # - action: shell_command.ouman_update
+            # data:
+              # value: "{{value}}"
+              # id: "S_69_85"
+        # step: 1
+        # min: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_54_85=')[1].split(';')[0] }}"
+        # max: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_55_85=')[1].split(';')[0] }}"
+        # icon: mdi:tune-variant
+        # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+      # - name: Ouman L1 5-piste käyrän 3/5
+        # unit_of_measurement: "°C"
+        # unique_id: S_71_85
+        # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_71_85=')[1].split(';')[0] }}"
+        # set_value:
+          # - action: shell_command.ouman_logon
+          # - action: shell_command.ouman_update
+            # data:
+              # value: "{{value}}"
+              # id: "S_71_85"
+        # step: 1
+        # min: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_54_85=')[1].split(';')[0] }}"
+        # max: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_55_85=')[1].split(';')[0] }}"
+        # icon: mdi:tune-variant
+        # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+      # - name: Ouman L1 5-piste käyrän 4/5
+        # unit_of_measurement: "°C"
+        # unique_id: S_73_85
+        # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_73_85=')[1].split(';')[0] }}"
+        # set_value:
+          # - action: shell_command.ouman_logon
+          # - action: shell_command.ouman_update
+            # data:
+              # value: "{{value}}"
+              # id: "S_73_85"
+        # step: 1
+        # min: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_54_85=')[1].split(';')[0] }}"
+        # max: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_55_85=')[1].split(';')[0] }}"
+        # icon: mdi:tune-variant
+        # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+      # - name: Ouman L1 5-piste käyrän 5/5
+        # unit_of_measurement: "°C"
+        # unique_id: S_75_85
+        # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_75_85=')[1].split(';')[0] }}"
+        # set_value:
+          # - action: shell_command.ouman_logon
+          # - action: shell_command.ouman_update
+            # data:
+              # value: "{{value}}"
+              # id: "S_75_85"
+        # step: 1
+        # min: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_54_85=')[1].split(';')[0] }}"
+        # max: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_55_85=')[1].split(';')[0] }}"
+        # icon: mdi:tune-variant
+        # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+######## L1 VIIDENPISTEEN KÄYRÄN ASETUSPISTEET ########
+
+      # - name: Ouman L1 5-piste käyrän asetuspiste 1/3
+        # unit_of_measurement: "°C"
+        # unique_id: S_70_85
+        # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_70_85=')[1].split(';')[0] }}"
+        # set_value:
+          # - action: shell_command.ouman_logon
+          # - action: shell_command.ouman_update
+            # data:
+              # value: "{{value}}"
+              # id: "S_70_85"
+        # step: 1
+        # min: -20
+        # max: 0
+        # icon: mdi:knob
+        # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+      # - name: Ouman L1 5-piste käyrän asetuspiste 2/3
+        # unit_of_measurement: "°C"
+        # unique_id: S_72_85
+        # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_72_85=')[1].split(';')[0] }}"
+        # set_value:
+          # - action: shell_command.ouman_logon
+          # - action: shell_command.ouman_update
+            # data:
+              # value: "{{value}}"
+              # id: "S_72_85"
+        # step: 1
+        # min: -10
+        # max: 10
+        # icon: mdi:knob
+        # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+      # - name: Ouman L1 5-piste käyrän asetuspiste 3/3
+        # unit_of_measurement: "°C"
+        # unique_id: S_74_85
+        # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_74_85=')[1].split(';')[0] }}"
+        # set_value:
+          # - action: shell_command.ouman_logon
+          # - action: shell_command.ouman_update
+            # data:
+              # value: "{{value}}"
+              # id: "S_74_85"
+        # step: 1
+        # min: 0
+        # max: 20
+        # icon: mdi:knob
+        # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+
+######## L1 KÄSIAJO ########
+
+      # - name: Ouman L1 käsiajo
+        # unit_of_measurement: "°C"
+        # unique_id: S_92_85
+        # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('_92_85=')[1].split(';')[0] }}"
+        # set_value:
+          # - action: shell_command.ouman_logon
+          # - action: shell_command.ouman_update
+            # data:
+              # value: "{{value}}"
+              # id: "S_92_85"
+        # step: 1
+        # min: 0
+        # max: 100
+        # icon: mdi:valve
+        # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false and state_attr('sensor.ouman_vastaus', 'data').split('_59_85=')[1].split(';')[0] == '6' }}"
+
+
+    select:
+
+######## L1 OHJAUSTAPA ########
+
+      # - name: Ouman L1 ohjaustapa
+        # unique_id: S_59_85
+        # icon: mdi:form-select
+        # options: "{{['Automaatti', 'Pakko-ohjaus, lämmönpudotus', 'Pakko-ohjaus, suuri lämmönpudotus', 'Pakko-ohjaus, norm. lämpötaso', 'Alasajo', 'Käsiajo, sähköinen']}}"
+        # state: >
+          # {% set opt = state_attr('sensor.ouman_vastaus', 'data').split('_59_85=')[1].split(';')[0] %}
+          # {% set mapper = {
+            # '0': 'Automaatti',
+            # '1': 'Pakko-ohjaus, lämmönpudotus',
+            # '2': 'Pakko-ohjaus, suuri lämmönpudotus',
+            # '3': 'Pakko-ohjaus, norm. lämpötaso',
+            # '5': 'Alasajo',
+            # '6': 'Käsiajo, sähköinen'
+          # }%}
+          # {{ mapper.get(opt) }}
+        # select_option:
+          # - action: shell_command.ouman_logon
+          # - action: shell_command.ouman_update
+            # data:
+              # value: >
+                # {% set mapper = {
+                  # 'Automaatti': '0',
+                  # 'Pakko-ohjaus, lämmönpudotus': '1',
+                  # 'Pakko-ohjaus, suuri lämmönpudotus': '2',
+                  # 'Pakko-ohjaus, norm. lämpötaso': '3',
+                  # 'Alasajo': '5',
+                  # 'Käsiajo, sähköinen': '6'
+                # }%}
+                # {{ mapper.get(option) }}
+              # id: "S_59_85"
+        # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+
+switch:
+
+####### L1 KOTONA/POISSA ########
+
+## Mikäli haluat että L1 ja L2 kotona/poissa toimii yhdestä kytkimestä niin ota tässä käyttöön
+## vaihtoehtoiset id rivit jotka on kahden kommenttti merkin takana ja kommentoi toiset pois.
+
+  # - platform: template
+    # switches:
+      # ouman_l1_kotona_poissa:
+        # friendly_name: Ouman L1 kotona/poissa kytkin
+        # unique_id: S_135_85       # kommentoi tämä rivi pois mikäli otat alla olevan käyttöön
+        # unique_id: S_135_85;S_222_85
+        # value_template: "{{ 'poissa' if state_attr('sensor.ouman_vastaus', 'data').split('135_85=')[1].split(';')[0] == '1' else 'kotona' }}"
+        # turn_on:
+          # - action: shell_command.ouman_logon
+          # - action: shell_command.ouman_update
+            # data:
+              # value: "1"
+              # id: "S_135_85"        # kommentoi tämä rivi pois mikäli otat alla olevan käyttöön
+           #  id: "S_135_85;S_222_85"
+        # turn_off:
+          # - action: shell_command.ouman_logon
+          # - action: shell_command.ouman_update
+            # data:
+              # value: "0"
+              # id: "S_135_85"        # kommentoi tämä rivi pois mikäli otat alla olevan käyttöön
+              # id: "S_135_85;S_222_85"
+        # availability_template: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"

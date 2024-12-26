@@ -1,0 +1,270 @@
+## Tässä tiedostossa on kaikki releitä koskevat anturit ja säätimet.
+## Ota haluamasi käyttöön poistamalla kommentit rivien alusta (# ). Poista kommenttimerkit ryppään jokaiselta riviltä.
+
+template:
+  binary_sensor:
+
+## Tämä binäärisensori pitää olla käytössä että mikään alla olevista säätimistä toimii
+
+    # - name: "Ouman releohjaus: releen tila"
+      # unique_id: S_1004_85;S_329_85
+      # icon: mdi:electric-switch
+      # state: >
+        # {% set value = state_attr('sensor.ouman_vastaus', 'data').split('1004_85=')[1].split(';')[0] %}
+        # {{ 'false' if value == 'OFF' or value == 'KÄY' else 'true' }}
+      # availability: >
+          # {{ state_attr('sensor.ouman_vastaus', 'error') == false and
+             # state_attr('sensor.ouman_vastaus', 'data').split('329_85=')[1].split(';')[0] != '0' }}
+
+  select:
+
+## Mikäli haluat vaihtaa releenohjaustilaa, ota tämä käyttöön
+
+    # - name: Ouman releohjaus tila
+      # unique_id: ouman_S_329_85
+      # icon: mdi:form-select
+      # options: "{{['Pois päältä', 'Kesäpysäytys', 'Aikaohjelman mukaan', 'Lämpötilan mukaan', 'Latauspumpun ohjaus (hybridi)', 'Venttiilin mukaan', 'Summahälytys']}}"
+      # state: >
+        # {% set opt = state_attr('sensor.ouman_vastaus', 'data').split('329_85=')[1].split(';')[0] %}
+        # {% set mapper = {
+          # '0': 'Pois päältä',
+          # '1': 'Kesäpysäytys',
+          # '2': 'Aikaohjelman mukaan',
+          # '3': 'Lämpötilan mukaan',
+          # '4': 'Latauspumpun ohjaus (hybridi)',
+          # '5': 'Venttiilin mukaan',
+          # '7': 'Summahälytys'
+        # }%}
+        # {{ mapper.get(opt) }}
+      # select_option:
+        # - action: shell_command.ouman_logon
+        # - action: shell_command.ouman_update
+          # data:
+            # value: >
+              # {% set mapper = {
+                # 'Pois päältä': '0',
+                # 'Kesäpysäytys': '1',
+                # 'Aikaohjelman mukaan': '2',
+                # 'Lämpötilan mukaan': '3',
+                # 'Latauspumpun ohjaus (hybridi)': '4',
+                # 'Venttiilin mukaan': '5',
+                # 'Summahälytys': '7'
+              # }%}
+              # {{ mapper.get(option) }}
+            # id: "S_329_85"
+      # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+    # - name: "Ouman releohjaus: kesäpysäytys"
+      # unique_id: S_364_85
+      # options: "{{['Automaatti', 'Käy', 'Seis']}}"
+      # state: >
+        # {% set opt = state_attr('sensor.ouman_vastaus', 'data').split('364_85=')[1].split(';')[0] %}
+        # {% set mapper = {
+          # '0': 'Automaatti',
+          # '1': 'Seis',
+          # '2': 'Käy'
+        # }%}
+        # {{ mapper.get(opt) }}
+      # select_option:
+        # - action: shell_command.ouman_logon
+        # - action: shell_command.ouman_update
+          # data:
+            # value: >
+              # {% set mapper = {
+                # 'Automaatti': '0',
+                # 'Seis': '1',
+                # 'Käy': '2'
+              # }%}
+              # {{ mapper.get(option) }}
+            # id: "S_364_85"
+      # availability: >
+          # {{ state_attr('sensor.ouman_vastaus', 'error') == false and
+             # state_attr('sensor.ouman_vastaus', 'data').split('329_85=')[1].split(';')[0] == '1' }}
+
+    # - name: "Ouman releohjaus: aikaohjelma"
+      # unique_id: S_362_85
+      # icon: mdi:timer-pause
+      # options: "{{['Automaatti', 'On', 'Off']}}"
+      # state: >
+        # {% set opt = state_attr('sensor.ouman_vastaus', 'data').split('362_85=')[1].split(';')[0] %}
+        # {% set mapper = {
+          # '0': 'Automaatti',
+          # '1': 'On',
+          # '2': 'Off'
+        # }%}
+        # {{ mapper.get(opt) }}
+      # select_option:
+        # - action: shell_command.ouman_logon
+        # - action: shell_command.ouman_update
+          # data:
+            # value: >
+              # {% set mapper = {
+                # 'Automaatti': '0',
+                # 'On': '1',
+                # 'Off': '2'
+              # }%}
+              # {{ mapper.get(option) }}
+            # id: "S_362_85"
+      # availability: >
+          # {{ state_attr('sensor.ouman_vastaus', 'error') == false and
+             # state_attr('sensor.ouman_vastaus', 'data').split('329_85=')[1].split(';')[0] == '2' }}
+
+    # - name: "Ouman releohjaus: lämpötilan mukaan"
+      # unique_id: S_330_85
+      # icon: mdi:thermometer-check
+      # options: "{{['Automaatti', 'On', 'Off']}}"
+      # state: >
+        # {% set opt = state_attr('sensor.ouman_vastaus', 'data').split('330_85=')[1].split(';')[0] %}
+        # {% set mapper = {
+          # '0': 'Automaatti',
+          # '1': 'On',
+          # '2': 'Off'
+        # }%}
+        # {{ mapper.get(opt) }}
+      # select_option:
+        # - action: shell_command.ouman_logon
+        # - action: shell_command.ouman_update
+          # data:
+            # value: >
+              # {% set mapper = {
+                # 'Automaatti': '0',
+                # 'On': '1',
+                # 'Off': '2'
+              # }%}
+              # {{ mapper.get(option) }}
+            # id: "S_330_85"
+      # availability: >
+          # {{ state_attr('sensor.ouman_vastaus', 'error') == false and
+             # state_attr('sensor.ouman_vastaus', 'data').split('329_85=')[1].split(';')[0] == '3' }}
+
+    # - name: "Ouman releohjaus: latauspumpun ohjaus"
+      # unique_id: S_340_85
+      # icon: mdi:pump
+      # options: "{{['Automaatti', 'On', 'Off']}}"
+      # state: >
+        # {% set opt = state_attr('sensor.ouman_vastaus', 'data').split('340_85=')[1].split(';')[0] %}
+        # {% set mapper = {
+          # '0': 'Automaatti',
+          # '1': 'On',
+          # '2': 'Off'
+        # }%}
+        # {{ mapper.get(opt) }}
+      # select_option:
+        # - action: shell_command.ouman_logon
+        # - action: shell_command.ouman_update
+          # data:
+            # value: >
+              # {% set mapper = {
+                # 'Automaatti': '0',
+                # 'On': '1',
+                # 'Off': '2'
+              # }%}
+              # {{ mapper.get(option) }}
+            # id: "S_340_85"
+      # availability: >
+          # {{ state_attr('sensor.ouman_vastaus', 'error') == false and
+             # state_attr('sensor.ouman_vastaus', 'data').split('329_85=')[1].split(';')[0] == '4' }}
+
+    # - name: "Ouman releohjaus: venttiilin mukaan"
+      # unique_id: S_336_85
+      # icon: mdi:valve
+      # options: "{{['Automaatti', 'On', 'Off']}}"
+      # state: >
+        # {% set opt = state_attr('sensor.ouman_vastaus', 'data').split('336_85=')[1].split(';')[0] %}
+        # {% set mapper = {
+          # '0': 'Automaatti',
+          # '1': 'On',
+          # '2': 'Off'
+        # }%}
+        # {{ mapper.get(opt) }}
+      # select_option:
+        # - action: shell_command.ouman_logon
+        # - action: shell_command.ouman_update
+          # data:
+            # value: >
+              # {% set mapper = {
+                # 'Automaatti': '0',
+                # 'On': '1',
+                # 'Off': '2'
+              # }%}
+              # {{ mapper.get(option) }}
+            # id: "S_336_85"
+      # availability: >
+          # {{ state_attr('sensor.ouman_vastaus', 'error') == false and
+             # state_attr('sensor.ouman_vastaus', 'data').split('329_85=')[1].split(';')[0] == '5' }}
+
+  number:
+
+
+    # - name: "Ouman releohjaus: rele lämpötilan mukaan, eroalue"
+      # unit_of_measurement: "°C"
+      # unique_id: S_334_85
+      # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('334_85=')[1].split(';')[0] }}"
+      # set_value:
+        # - action: shell_command.ouman_logon
+        # - action: shell_command.ouman_update
+          # data:
+            # value: "{{value}}"
+            # id: "S_334_85"
+      # step: 1
+      # min: 1
+      # max: 10
+      # icon: mdi:knob
+      # availability: >
+          # {{ state_attr('sensor.ouman_vastaus', 'error') == false and
+             # state_attr('sensor.ouman_vastaus', 'data').split('329_85=')[1].split(';')[0] == '3' }}
+
+    # - name: "Ouman releohjaus: lämpötilan mukaan, arvo jossa rele vetää"
+      # unit_of_measurement: "°C"
+      # unique_id: S_333_85
+      # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('333_85=')[1].split(';')[0] }}"
+      # set_value:
+        # - action: shell_command.ouman_logon
+        # - action: shell_command.ouman_update
+          # data:
+            # value: "{{value}}"
+            # id: "S_333_85"
+      # step: 1
+      # min: -25
+      # max: 90
+      # icon: mdi:knob
+      # availability: >
+          # {{ state_attr('sensor.ouman_vastaus', 'error') == false and
+             # state_attr('sensor.ouman_vastaus', 'data').split('329_85=')[1].split(';')[0] == '3' }}
+
+
+    # - name: "Ouman releohjaus: venttiilin asennon mukaan, ON-tilaan"
+      # unit_of_measurement: "°C"
+      # unique_id: S_338_85
+      # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('338_85=')[1].split(';')[0] }}"
+      # set_value:
+        # - action: shell_command.ouman_logon
+        # - action: shell_command.ouman_update
+          # data:
+            # value: "{{value}}"
+            # id: "S_338_85"
+      # step: 1
+      # min: 0
+      # max: 100
+      # icon: mdi:knob
+      # availability: >
+          # {{ state_attr('sensor.ouman_vastaus', 'error') == false and
+             # state_attr('sensor.ouman_vastaus', 'data').split('329_85=')[1].split(';')[0] == '5' }}
+
+    # - name: "Ouman releohjaus: venttiilin asennon mukaan, OFF-tilaan"
+      # unit_of_measurement: "°C"
+      # unique_id: S_339_85
+      # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('339_85=')[1].split(';')[0] }}"
+      # set_value:
+        # - action: shell_command.ouman_logon
+        # - action: shell_command.ouman_update
+          # data:
+            # value: "{{value}}"
+            # id: "S_339_85"
+      # step: 1
+      # min: 0
+      # max: 100
+      # icon: mdi:knob
+      # availability: >
+          # {{ state_attr('sensor.ouman_vastaus', 'error') == false and
+             # state_attr('sensor.ouman_vastaus', 'data').split('329_85=')[1].split(';')[0] == '5' }}
