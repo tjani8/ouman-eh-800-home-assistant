@@ -148,7 +148,7 @@ Virheitä saattaa olla.
 | S_249_85=-1.8				| joku ulkolämpö |
 | S_251_85=V3.0.1			| Ohjelmistoversio |
 | S_252_85=OUMAN EH-800		| Mallinimi |
-| S_253_85=00072084			| Sarjanumero |
+| S_253_85=00072084			| Sarjanumero |
 | S_254_85=					| MAC-osoite |
 | S_258_85=0.0				| L1 Ulkolämpötilan hidastus vaikutus |
 | S_259_85=32.4				| L1 meno |
