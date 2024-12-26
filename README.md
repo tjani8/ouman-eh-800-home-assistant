@@ -7,6 +7,9 @@ Anturit ja säätimet on jaettu kolmeen erilliseen tiedostoon.
   - `ouman_relay.yaml`: sisältää releen ohjaukseen liittyät anturit, oletuksena kaikki kommentoitu pois käytöstä
   - `ouman_measurements.yaml`: sisältää kaikki lisämittauksiin liittyvät anturit/säätimet (pois lukien huonelämpö), oletuksena kaikki kommentoitu pois käytöstä
 
+Tiedot haetaan säätimeltä oletuksena minuutin välein, poislukien hälytysanturi joka haetaan kahden minuutin välein.  
+Osa säätimimistä on tehty niin että ovat `unavailable` kunnes sitä oikeasti pystyy säätämään, esim. venttiilin käsisäädön -säädin tulee käytettäväksi vasta kun ohjaustapa on muutettu käsisäädölle.
+
 
 ## Käyttöönotto
 1. Kopioi `packages` hakemisto Home Assistantin `config` kansioon.  
@@ -194,7 +197,7 @@ mutta näet aktivoitujen tietueitten määrän `Ouman rekisterit` anturin numero
 
 `unique id` -arvoja ei saa muuttaa, koska niiden perusteella haetaan aktivoidut sensorit/säätimet.
 
-Hälytys anturi hakee vain ensimmäisiä ilmaantuneen hälytyksen.
+Hälytysanturi hakee vain ensimmäsenä ilmaantuneen hälytyksen.
 
 ## Rekisterit
 Mikäli jotain haluamaasi anturia/säätöä ei löydy valmiina anturina niin voit katsoa [registers.md](registers.md) tiedostoa jos sieltä löytyisi haluamasi rekisteri ja luoda itse uuden anturin.  
