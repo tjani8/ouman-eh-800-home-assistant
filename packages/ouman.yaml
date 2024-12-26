@@ -26,7 +26,8 @@ template:
 
   - trigger:
     - trigger: time_pattern
-      minutes: "/1"
+      minutes: "/1"         # anturien päivitys minuutin välein
+      # seconds: "/30"      # anturien päivitys 30 sekunnin välein
     - trigger: event
       event_type: call_service
       event_data:
