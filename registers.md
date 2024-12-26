@@ -3,7 +3,6 @@ Virheitä saattaa olla.
 
 |rekisteri ja arvo 			| selitys						 |
 | ------------------------- | ------------------------------ |
-
 | S_1_85=-45				| Lämmönpudotus estetty |
 | S_3_85=0					| Kieli (0 suomi/1 ruotsi/2 englanti/3 venäjä/4 puola/5 viro) |
 | S_6_85=0					| Mittaus 3 määritys |
