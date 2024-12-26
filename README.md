@@ -195,3 +195,6 @@ mutta näet aktivoitujen tietueitten määrän `Ouman rekisterit` anturin numero
 `unique id` -arvoja ei saa muuttaa, koska niiden perusteella haetaan aktivoidut sensorit/säätimet.
 
 Hälytys anturi hakee vain ensimmäisiä ilmaantuneen hälytyksen.
+
+## Rekisterit
+Mikäli jotain haluamaasi anturia/säätöä ei löydy valmiina anturina niin voit katsoa [registers.md](registers.md) tiedostoa jos sieltä löytyisi haluamasi rekisteri ja luoda itse uuden anturin.  
