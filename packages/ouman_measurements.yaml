@@ -6,6 +6,7 @@ template:
     # - name: Ouman potentiometri TMR/SP
       # unique_id: S_274_85
       # device_class: temperature
+      # state_class: measurement
       # unit_of_measurement: "°C"
       # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('274_85=')[1].split(';')[0] | float (0)}}"
       # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
@@ -14,6 +15,7 @@ template:
       # unique_id: S_237_85
       # icon: mdi:water-boiler
       # device_class: temperature
+      # state_class: measurement
       # unit_of_measurement: "°C"
       # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('237_85=')[1].split(';')[0] | float (0)}}"
       # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
@@ -22,6 +24,7 @@ template:
       # unique_id: S_238_85
       # icon: mdi:water-boiler
       # device_class: temperature
+      # state_class: measurement
       # unit_of_measurement: "°C"
       # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('238_85=')[1].split(';')[0] | float (0)}}"
       # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
@@ -30,6 +33,7 @@ template:
       # unique_id: S_283_85
       # icon: mdi:water-thermometer-outline
       # device_class: temperature
+      # state_class: measurement
       # unit_of_measurement: "°C"
       # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('283_85=')[1].split(';')[0] }}"
       # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
@@ -38,6 +42,7 @@ template:
       # unique_id: S_380_85
       # icon: mdi:sun-thermometer
       # device_class: temperature
+      # state_class: measurement
       # unit_of_measurement: "°C"
       # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('380_85=')[1].split(';')[0] }}"
       # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
@@ -47,6 +52,7 @@ template:
       # unique_id: S_234_85;S_9_85
       # device_class: temperature
       # unit_of_measurement: "°C"
+      # state_class: measurement
       # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('234_85=')[1].split(';')[0] }}"
       # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
       # attributes:
@@ -56,6 +62,7 @@ template:
     # - name: Ouman mittaus 4
       # unique_id: S_235_85;S_10_85
       # device_class: temperature
+      # state_class: measurement
       # unit_of_measurement: "°C"
       # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('235_85=')[1].split(';')[0] }}"
       # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
@@ -66,12 +73,14 @@ template:
     # - name: Ouman mittaus 5
       # unique_id: S_347_85;S_354_85
       # device_class: temperature
+      # state_class: measurement
       # unit_of_measurement: "°C"
       # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('347_85=')[1].split(';')[0] }}"
       # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
       # attributes:
         # nimi: "{{ state_attr('sensor.ouman_vastaus', 'data').split('354_85=')[1].split(';')[0] }}"
 
+        
   binary_sensor:
     # - name: Ouman painehälytys
       # unique_id: S_239_85

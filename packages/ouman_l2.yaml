@@ -6,6 +6,7 @@ template:
     # - name: Ouman L2 toteutunut
       # unique_id: S_293_85
       # device_class: temperature
+      # state_class: measurement
       # unit_of_measurement: "°C"
       # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('293_85=')[1].split(';')[0] | float (0)}}"
       # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
@@ -13,6 +14,7 @@ template:
     # - name: Ouman L2 tavoite
       # unique_id: S_310_85
       # device_class: temperature
+      # state_class: measurement
       # unit_of_measurement: "°C"
       # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('310_85=')[1].split(';')[0] | float (0)}}"
       # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
@@ -20,12 +22,14 @@ template:
     # - name: Ouman L2 käyrä
       # unique_id: S_294_85
       # device_class: temperature
+      # state_class: measurement
       # unit_of_measurement: "°C"
       # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('294_85=')[1].split(';')[0] }}"
       # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
 
     # - name: Ouman L2 venttiilin asento
       # unique_id: S_306_85
+      # state_class: measurement
       # icon: mdi:valve
       # unit_of_measurement: "%"
       # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('306_85=')[1].split(';')[0] }}"
@@ -34,6 +38,7 @@ template:
     # - name: Ouman L2 hienosäädön vaikutus menovesi
       # unique_id: S_321_85
       # device_class: temperature
+      # state_class: measurement
       # unit_of_measurement: "°C"
       # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('321_85=')[1].split(';')[0] }}"
       # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
@@ -43,6 +48,7 @@ template:
     # - name: Ouman L2 lattialämmityksen ennakoinnin vaikutus
       # unique_id: S_292_85
       # device_class: temperature
+      # state_class: measurement
       # unit_of_measurement: "°C"
       # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('292_85=')[1].split(';')[0] }}"
       # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
@@ -53,6 +59,7 @@ template:
       # unique_id: S_295_85
       # icon: mdi:home-thermometer-outline
       # device_class: temperature
+      # state_class: measurement
       # unit_of_measurement: "°C"
       # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('295_85=')[1].split(';')[0] }}"
       # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
@@ -60,6 +67,7 @@ template:
     # - name: Ouman L2 huonelämpötila hidastettu
       # unique_id: S_296_85
       # device_class: temperature
+      # state_class: measurement
       # unit_of_measurement: "°C"
       # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('296_85=')[1].split(';')[0] }}"
       # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
@@ -67,6 +75,7 @@ template:
     # - name: Ouman L2 huonekompensoinnin vaikutus
       # unique_id: S_297_85
       # device_class: temperature
+      # state_class: measurement
       # unit_of_measurement: "°C"
       # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('297_85=')[1].split(';')[0] }}"
       # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
@@ -74,6 +83,7 @@ template:
     # - name: Ouman L2 laskennallinen huoneasetusarvo
       # unique_id: S_313_85
       # device_class: temperature
+      # state_class: measurement
       # unit_of_measurement: "°C"
       # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('313_85=')[1].split(';')[0] }}"
       # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
@@ -81,6 +91,7 @@ template:
     # - name: Ouman L2 hienosäädön vaikutus huone
       # unique_id: S_320_85
       # device_class: temperature
+      # state_class: measurement
       # unit_of_measurement: "°C"
       # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('320_85=')[1].split(';')[0] }}"
       # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
@@ -88,11 +99,10 @@ template:
     # - name: Ouman L2 huonekompensoinnin aikakorjaus
       # unique_id: S_298_85
       # device_class: temperature
+      # state_class: measurement
       # unit_of_measurement: "°C"
       # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('298_85=')[1].split(';')[0] }}"
       # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
-
-
 
   number:
 
