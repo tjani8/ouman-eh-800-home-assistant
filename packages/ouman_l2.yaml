@@ -95,7 +95,7 @@ template:
       # unit_of_measurement: "°C"
       # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('320_85=')[1].split(';')[0] }}"
       # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
-      
+
     # - name: Ouman L2 huonekompensoinnin aikakorjaus
       # unique_id: S_298_85
       # device_class: temperature
@@ -103,6 +103,8 @@ template:
       # unit_of_measurement: "°C"
       # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('298_85=')[1].split(';')[0] }}"
       # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+
+
 
   number:
 
@@ -118,12 +120,15 @@ template:
           # data:
             # value: "{{value}}"
             # id: "S_221_85"
+        # - delay: 2
+        # - event: ouman
       # step: 0.1
       # min: -4
       # max: 4
       # icon: mdi:knob
       # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
 
+## Lämmöpudotuksen asetusarvo
     # - name: Ouman L2 lämmönpudotus menovesi
       # unit_of_measurement: "°C"
       # unique_id: S_176_85
@@ -134,12 +139,15 @@ template:
           # data:
             # value: "{{value}}"
             # id: "S_176_85"
+        # - delay: 2
+        # - event: ouman
       # step: 0.1
       # min: 0
       # max: 40
       # icon: mdi:knob
       # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
 
+## Suuren lämmöpudotuksen asetusarvo
     # - name: Ouman L2 suuri lämmönpudotus menovesi
       # unit_of_measurement: "°C"
       # unique_id: S_177_85
@@ -150,6 +158,8 @@ template:
           # data:
             # value: "{{value}}"
             # id: "S_177_85"
+        # - delay: 2
+        # - event: ouman
       # step: 0.1
       # min: 0
       # max: 40
@@ -168,6 +178,8 @@ template:
           # data:
             # value: "{{value}}"
             # id: "S_168_85"
+        # - delay: 2
+        # - event: ouman
       # step: 0.1
       # min: 5
       # max: 30
@@ -184,12 +196,15 @@ template:
           # data:
             # value: "{{value}}"
             # id: "S_189_85"
+        # - delay: 2
+        # - event: ouman
       # step: 0.1
       # min: -4
       # max: 4
       # icon: mdi:knob
       # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
 
+## Lämmöpudotuksen asetusarvo
     # - name: Ouman L2 lämmönpudotus menovesi huonelämpö
       # unit_of_measurement: "°C"
       # unique_id: S_174_85
@@ -200,12 +215,15 @@ template:
           # data:
             # value: "{{value}}"
             # id: "S_174_85"
+        # - delay: 2
+        # - event: ouman
       # step: 0.1
       # min: 0
       # max: 30
       # icon: mdi:knob
       # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
 
+## Suuren lämmöpudotuksen asetusarvo
     # - name: Ouman L2 suuri lämmönpudotus menovesi huonelämpö
       # unit_of_measurement: "°C"
       # unique_id: S_175_85
@@ -216,6 +234,8 @@ template:
           # data:
             # value: "{{value}}"
             # id: "S_175_85"
+        # - delay: 2
+        # - event: ouman
       # step: 0.1
       # min: 0
       # max: 30
@@ -234,6 +254,8 @@ template:
           # data:
             # value: "{{value}}"
             # id: "S_214_85"
+        # - delay: 2
+        # - event: ouman
       # step: 0.1
       # min: 5
       # max: 95
@@ -252,6 +274,8 @@ template:
           # data:
             # value: "{{value}}"
             # id: "S_148_85"
+        # - delay: 2
+        # - event: ouman
       # step: 1
       # min: "{{ state_attr('sensor.ouman_vastaus', 'data').split('141_85=')[1].split(';')[0] }}"
       # max: "{{ state_attr('sensor.ouman_vastaus', 'data').split('142_85=')[1].split(';')[0] }}"
@@ -268,6 +292,8 @@ template:
           # data:
             # value: "{{value}}"
             # id: "S_150_85"
+        # - delay: 2
+        # - event: ouman
       # step: 1
       # min: "{{ state_attr('sensor.ouman_vastaus', 'data').split('141_85=')[1].split(';')[0] }}"
       # max: "{{ state_attr('sensor.ouman_vastaus', 'data').split('142_85=')[1].split(';')[0] }}"
@@ -284,6 +310,8 @@ template:
           # data:
             # value: "{{value}}"
             # id: "S_152_85"
+        # - delay: 2
+        # - event: ouman
       # step: 1
       # min: "{{ state_attr('sensor.ouman_vastaus', 'data').split('141_85=')[1].split(';')[0] }}"
       # max: "{{ state_attr('sensor.ouman_vastaus', 'data').split('142_85=')[1].split(';')[0] }}"
@@ -302,6 +330,8 @@ template:
           # data:
             # value: "{{value}}"
             # id: "S_154_85"
+        # - delay: 2
+        # - event: ouman
       # step: 1
       # min: "{{ state_attr('sensor.ouman_vastaus', 'data').split('141_85=')[1].split(';')[0] }}"
       # max: "{{ state_attr('sensor.ouman_vastaus', 'data').split('142_85=')[1].split(';')[0] }}"
@@ -318,6 +348,8 @@ template:
           # data:
             # value: "{{value}}"
             # id: "S_156_85"
+        # - delay: 2
+        # - event: ouman
       # step: 1
       # min: "{{ state_attr('sensor.ouman_vastaus', 'data').split('141_85=')[1].split(';')[0] }}"
       # max: "{{ state_attr('sensor.ouman_vastaus', 'data').split('142_85=')[1].split(';')[0] }}"
@@ -334,6 +366,8 @@ template:
           # data:
             # value: "{{value}}"
             # id: "S_158_85"
+        # - delay: 2
+        # - event: ouman
       # step: 1
       # min: "{{ state_attr('sensor.ouman_vastaus', 'data').split('141_85=')[1].split(';')[0] }}"
       # max: "{{ state_attr('sensor.ouman_vastaus', 'data').split('142_85=')[1].split(';')[0] }}"
@@ -350,6 +384,8 @@ template:
           # data:
             # value: "{{value}}"
             # id: "S_160_85"
+        # - delay: 2
+        # - event: ouman
       # step: 1
       # min: "{{ state_attr('sensor.ouman_vastaus', 'data').split('141_85=')[1].split(';')[0] }}"
       # max: "{{ state_attr('sensor.ouman_vastaus', 'data').split('142_85=')[1].split(';')[0] }}"
@@ -366,6 +402,8 @@ template:
           # data:
             # value: "{{value}}"
             # id: "S_162_85"
+        # - delay: 2
+        # - event: ouman
       # step: 1
       # min: "{{ state_attr('sensor.ouman_vastaus', 'data').split('141_85=')[1].split(';')[0] }}"
       # max: "{{ state_attr('sensor.ouman_vastaus', 'data').split('142_85=')[1].split(';')[0] }}"
@@ -384,6 +422,8 @@ template:
           # data:
             # value: "{{value}}"
             # id: "S_157_85"
+        # - delay: 2
+        # - event: ouman
       # step: 1
       # min: -20
       # max: 0
@@ -400,6 +440,8 @@ template:
           # data:
             # value: "{{value}}"
             # id: "S_159_85"
+        # - delay: 2
+        # - event: ouman
       # step: 1
       # min: -10
       # max: 10
@@ -416,6 +458,8 @@ template:
           # data:
             # value: "{{value}}"
             # id: "S_161_85"
+        # - delay: 2
+        # - event: ouman
       # step: 1
       # min: 0
       # max: 20
@@ -425,7 +469,7 @@ template:
 ######## L2 KÄSIAJO ########
 
     # - name: Ouman L2 käsiajo
-      # unit_of_measurement: "°C"
+      # unit_of_measurement: "%"
       # unique_id: S_179_85
       # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('179_85=')[1].split(';')[0] }}"
       # set_value:
@@ -434,6 +478,8 @@ template:
           # data:
             # value: "{{value}}"
             # id: "S_179_85"
+        # - delay: 2
+        # - event: ouman
       # step: 1
       # min: 0
       # max: 100
@@ -477,6 +523,8 @@ template:
               # }%}
               # {{ mapper.get(option) }}
             # id: "S_146_85"
+        # - delay: 2
+        # - event: ouman
       # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
 
 switch:
@@ -498,10 +546,14 @@ switch:
             # data:
               # value: "1"
               # id: "S_222_85"
+          # - delay: 2
+          # - event: ouman
         # turn_off:
           # - action: shell_command.ouman_logon
           # - action: shell_command.ouman_update
             # data:
               # value: "0"
               # id: "S_222_85"
+          # - delay: 2
+          # - event: ouman
         # availability_template: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"

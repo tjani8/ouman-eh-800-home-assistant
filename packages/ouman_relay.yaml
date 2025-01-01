@@ -52,6 +52,8 @@ template:
               # }%}
               # {{ mapper.get(option) }}
             # id: "S_329_85"
+        # - delay: 2
+        # - event: ouman
       # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
 
     # - name: "Ouman releohjaus: kesäpysäytys"
@@ -77,6 +79,8 @@ template:
               # }%}
               # {{ mapper.get(option) }}
             # id: "S_364_85"
+        # - delay: 2
+        # - event: ouman
       # availability: >
           # {{ state_attr('sensor.ouman_vastaus', 'error') == false and
              # state_attr('sensor.ouman_vastaus', 'data').split('329_85=')[1].split(';')[0] == '1' }}
@@ -105,6 +109,8 @@ template:
               # }%}
               # {{ mapper.get(option) }}
             # id: "S_362_85"
+        # - delay: 2
+        # - event: ouman
       # availability: >
           # {{ state_attr('sensor.ouman_vastaus', 'error') == false and
              # state_attr('sensor.ouman_vastaus', 'data').split('329_85=')[1].split(';')[0] == '2' }}
@@ -133,6 +139,8 @@ template:
               # }%}
               # {{ mapper.get(option) }}
             # id: "S_330_85"
+        # - delay: 2
+        # - event: ouman
       # availability: >
           # {{ state_attr('sensor.ouman_vastaus', 'error') == false and
              # state_attr('sensor.ouman_vastaus', 'data').split('329_85=')[1].split(';')[0] == '3' }}
@@ -161,6 +169,8 @@ template:
               # }%}
               # {{ mapper.get(option) }}
             # id: "S_340_85"
+        # - delay: 2
+        # - event: ouman
       # availability: >
           # {{ state_attr('sensor.ouman_vastaus', 'error') == false and
              # state_attr('sensor.ouman_vastaus', 'data').split('329_85=')[1].split(';')[0] == '4' }}
@@ -189,6 +199,8 @@ template:
               # }%}
               # {{ mapper.get(option) }}
             # id: "S_336_85"
+        # - delay: 2
+        # - event: ouman
       # availability: >
           # {{ state_attr('sensor.ouman_vastaus', 'error') == false and
              # state_attr('sensor.ouman_vastaus', 'data').split('329_85=')[1].split(';')[0] == '5' }}
@@ -224,6 +236,8 @@ template:
           # data:
             # value: "{{value}}"
             # id: "S_333_85"
+        # - delay: 2
+        # - event: ouman
       # step: 1
       # min: -25
       # max: 90
@@ -243,6 +257,8 @@ template:
           # data:
             # value: "{{value}}"
             # id: "S_338_85"
+        # - delay: 2
+        # - event: ouman
       # step: 1
       # min: 0
       # max: 100
@@ -261,6 +277,8 @@ template:
           # data:
             # value: "{{value}}"
             # id: "S_339_85"
+        # - delay: 2
+        # - event: ouman
       # step: 1
       # min: 0
       # max: 100
