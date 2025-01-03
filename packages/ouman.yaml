@@ -645,7 +645,7 @@ switch:
         # friendly_name: Ouman L1 kotona/poissa kytkin
         # unique_id: S_135_85       # kommentoi tämä rivi pois mikäli otat alla olevan käyttöön
         # unique_id: S_135_85;S_222_85
-        # value_template: "{{ 'poissa' if state_attr('sensor.ouman_vastaus', 'data').split('135_85=')[1].split(';')[0] == '1' else 'kotona' }}"
+        # value_template: "{{ state_attr('sensor.ouman_vastaus', 'data').split('135_85=')[1].split(';')[0] == '1' }}"
         # turn_on:
           # - action: shell_command.ouman_logon
           # - action: shell_command.ouman_update

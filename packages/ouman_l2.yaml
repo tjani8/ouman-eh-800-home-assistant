@@ -539,7 +539,7 @@ switch:
       # ouman_l2_kotona_poissa:
         # friendly_name: Ouman L2 kotona/poissa kytkin
         # unique_id: S_222_85
-        # value_template: "{{ 'poissa' if state_attr('sensor.ouman_vastaus', 'data').split('222_85=')[1].split(';')[0] == '1' else 'kotona' }}"
+        # value_template: "{{ state_attr('sensor.ouman_vastaus', 'data').split('222_85=')[1].split(';')[0] == '1' }}"
         # turn_on:
           # - action: shell_command.ouman_logon
           # - action: shell_command.ouman_update
