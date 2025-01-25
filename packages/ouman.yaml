@@ -7,6 +7,11 @@ shell_command:
   ouman_data: curl "http://IP-OSOITE/request?{{ state_attr('sensor.ouman_rekisterit', 'data')}}"
   ouman_registers: awk '/^[[:space:]]*#/ {next} /unique_id':' S/ {printf "%s;", $2} END {print ""}'  /config/packages/ouman*
 
+homeassistant:
+  customize_glob:
+    "number.ouman_*":
+      mode: box
+      
 ## Näihin ei tarvitse koskea
 template:
   - trigger:
@@ -644,7 +649,7 @@ switch:
       # ouman_l1_kotona_poissa:
         # friendly_name: Ouman L1 kotona/poissa kytkin
         # unique_id: S_135_85       # kommentoi tämä rivi pois mikäli otat alla olevan käyttöön
-        # unique_id: S_135_85;S_222_85
+        ## unique_id: S_135_85;S_222_85
         # value_template: "{{ state_attr('sensor.ouman_vastaus', 'data').split('135_85=')[1].split(';')[0] == '1' }}"
         # turn_on:
           # - action: shell_command.ouman_logon
@@ -652,7 +657,7 @@ switch:
             # data:
               # value: "1"
               # id: "S_135_85"        # kommentoi tämä rivi pois mikäli otat alla olevan käyttöön
-           #  id: "S_135_85;S_222_85"
+           ##  id: "S_135_85;S_222_85"
           # - delay: 2
           # - event: ouman
         # turn_off:
@@ -661,7 +666,7 @@ switch:
             # data:
               # value: "0"
               # id: "S_135_85"        # kommentoi tämä rivi pois mikäli otat alla olevan käyttöön
-              # id: "S_135_85;S_222_85"
+              ## id: "S_135_85;S_222_85"
           # - delay: 2
           # - event: ouman
         # availability_template: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"

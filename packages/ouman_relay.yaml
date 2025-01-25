@@ -248,7 +248,7 @@ template:
 
 
     # - name: "Ouman releohjaus: venttiilin asennon mukaan, ON-tilaan"
-      # unit_of_measurement: "°C"
+      # unit_of_measurement: "%"
       # unique_id: S_338_85
       # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('338_85=')[1].split(';')[0] }}"
       # set_value:
@@ -268,7 +268,7 @@ template:
              # state_attr('sensor.ouman_vastaus', 'data').split('329_85=')[1].split(';')[0] == '5' }}
 
     # - name: "Ouman releohjaus: venttiilin asennon mukaan, OFF-tilaan"
-      # unit_of_measurement: "°C"
+      # unit_of_measurement: "%"
       # unique_id: S_339_85
       # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('339_85=')[1].split(';')[0] }}"
       # set_value:
