@@ -2,7 +2,7 @@
 ## Ota haluamasi käyttöön poistamalla kommentit rivien alusta (# ). Poista kommenttimerkit ryppään jokaiselta riviltä.
 
 template:
-  binary_sensor:
+  - binary_sensor:
 
 ## Tämä binäärisensori pitää olla käytössä että mikään alla olevista säätimistä toimii
 
@@ -16,7 +16,7 @@ template:
           # {{ state_attr('sensor.ouman_vastaus', 'error') == false and
              # state_attr('sensor.ouman_vastaus', 'data').split('329_85=')[1].split(';')[0] != '0' }}
 
-  select:
+  - select:
 
 ## Mikäli haluat vaihtaa releenohjaustilaa, ota tämä käyttöön
 
@@ -205,7 +205,7 @@ template:
           # {{ state_attr('sensor.ouman_vastaus', 'error') == false and
              # state_attr('sensor.ouman_vastaus', 'data').split('329_85=')[1].split(';')[0] == '5' }}
 
-  number:
+  - number:
 
 
     # - name: "Ouman releohjaus: rele lämpötilan mukaan, eroalue"

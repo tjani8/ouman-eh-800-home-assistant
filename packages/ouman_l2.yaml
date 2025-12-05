@@ -2,7 +2,7 @@
 ## Ota haluamasi käyttöön poistamalla kommentit rivien alusta (# ). Poista kommenttimerkit ryppään jokaiselta riviltä.
 
 template:
-  sensor:
+  - sensor:
     # - name: Ouman L2 toteutunut
       # unique_id: S_293_85
       # device_class: temperature
@@ -106,7 +106,7 @@ template:
 
 
 
-  number:
+  - number:
 
 ######## L2 HIENOSÄÄTÖ / LÄMMÖNPUDOTUS MENOVESI ########
 
@@ -489,7 +489,7 @@ template:
           # state_attr('sensor.ouman_vastaus', 'data').split('146_85=')[1].split(';')[0] == '6' }}
 
 
-  select:
+  - select:
 
 ######## L2 OHJAUSTAPA ########
 
@@ -527,19 +527,16 @@ template:
         # - event: ouman
       # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
 
-switch:
+  - switch:
 
 ######## L2 KOTONA/POISSA ########
 
 ## Mikäli haluat että L1 ja L2 kotona/poissa toimii yhdestä kytkimestä niin älä ota tätä
 ## käyttöön vaan ota ouman.yaml lopussa oleva kytkin ohjeiden mukaan käyttöön.
 
-  # - platform: template
-    # switches:
-      # ouman_l2_kotona_poissa:
-        # friendly_name: Ouman L2 kotona/poissa kytkin
+      # - name: Ouman L2 kotona/poissa kytkin
         # unique_id: S_222_85
-        # value_template: "{{ state_attr('sensor.ouman_vastaus', 'data').split('222_85=')[1].split(';')[0] == '1' }}"
+        # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('222_85=')[1].split(';')[0] == '1' }}"
         # turn_on:
           # - action: shell_command.ouman_logon
           # - action: shell_command.ouman_update
@@ -556,4 +553,4 @@ switch:
               # id: "S_222_85"
           # - delay: 2
           # - event: ouman
-        # availability_template: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+        # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"

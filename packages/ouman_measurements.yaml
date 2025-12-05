@@ -2,7 +2,7 @@
 ## Ota haluamasi käyttöön poistamalla kommentit rivien alusta (# ). Poista kommenttimerkit ryppään jokaiselta riviltä.
 
 template:
-  sensor:
+  - sensor:
     # - name: Ouman potentiometri TMR/SP
       # unique_id: S_274_85
       # device_class: temperature
@@ -81,7 +81,7 @@ template:
         # nimi: "{{ state_attr('sensor.ouman_vastaus', 'data').split('354_85=')[1].split(';')[0] }}"
 
         
-  binary_sensor:
+  - binary_sensor:
     # - name: Ouman painehälytys
       # unique_id: S_239_85
       # icon: mdi:alarm-light

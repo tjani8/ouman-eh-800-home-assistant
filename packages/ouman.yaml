@@ -213,7 +213,7 @@ template:
       # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('264_85=')[1].split(';')[0] }}"
       # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
 
-    number:
+  - number:
 
 ####### L1 HIENOSÄÄTÖ / LÄMMÖNPUDOTUS MENOVESI ########
 
@@ -598,7 +598,7 @@ template:
         # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false and state_attr('sensor.ouman_vastaus', 'data').split('_59_85=')[1].split(';')[0] == '6' }}"
 
 
-    select:
+  - select:
 
 ######## L1 OHJAUSTAPA ########
 
@@ -637,27 +637,24 @@ template:
         # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
 
 
-switch:
+  - switch:
 
 ####### L1 KOTONA/POISSA ########
 
 ## Mikäli haluat että L1 ja L2 kotona/poissa toimii yhdestä kytkimestä niin ota tässä käyttöön
 ## vaihtoehtoiset id rivit jotka on kahden kommenttti merkin takana ja kommentoi toiset pois.
 
-  # - platform: template
-    # switches:
-      # ouman_l1_kotona_poissa:
-        # friendly_name: Ouman L1 kotona/poissa kytkin
+      # - name: Ouman L1 kotona/poissa kytkin
         # unique_id: S_135_85       # kommentoi tämä rivi pois mikäli otat alla olevan käyttöön
         ## unique_id: S_135_85;S_222_85
-        # value_template: "{{ state_attr('sensor.ouman_vastaus', 'data').split('135_85=')[1].split(';')[0] == '1' }}"
+        # state: "{{ state_attr('sensor.ouman_vastaus', 'data').split('135_85=')[1].split(';')[0] == '1' }}"
         # turn_on:
           # - action: shell_command.ouman_logon
           # - action: shell_command.ouman_update
             # data:
               # value: "1"
               # id: "S_135_85"        # kommentoi tämä rivi pois mikäli otat alla olevan käyttöön
-           ##  id: "S_135_85;S_222_85"
+              ## id: "S_135_85;S_222_85"
           # - delay: 2
           # - event: ouman
         # turn_off:
@@ -669,4 +666,4 @@ switch:
               ## id: "S_135_85;S_222_85"
           # - delay: 2
           # - event: ouman
-        # availability_template: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"
+        # availability: "{{ state_attr('sensor.ouman_vastaus', 'error') == false }}"

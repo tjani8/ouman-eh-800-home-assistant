@@ -12,11 +12,11 @@ Osa säätimimistä on tehty niin että ovat `unavailable` kunnes sitä oikeasti
 
 
 ## Käyttöönotto
-1. Kopioi `packages` hakemisto Home Assistantin `config` kansioon.  
+1. Kopioi `packages` hakemisto Home Assistantin `config` kansioon eli samaan kansioon jossa on `configuration.yaml`.
    Mikäli käytössäsi on vain L1 piiri tarvitset vain `ouman.yaml` tiedoston.
 2. Muokkaa `ouman.yaml` tiedoston ensimmäisiä rivejä:
    - Oumanin käyttäjätunnus ja salasana niiden paikoille
-   - Oumanin IP-osoite kaikkeen viiteen kohtaan
+   - Oumanin IP-osoite kaikkeen neljään kohtaan
 3. Lisää Home Assistantin `configuration.yaml` tiedostoon `homeassistant:` -kohdan alle kahdella välilyönnillä sisennettynä seuraava rivi: `packages: !include_dir_named packages`  
    Lopputuloksen pitäisi näyttää tältä:
    ```yaml
